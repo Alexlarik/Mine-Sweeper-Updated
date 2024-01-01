@@ -1,0 +1,23 @@
+body {
+     margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+    
+}
+button {
+    min-width: 30px;
+    min-height: 30px;
+    background-color: lightyellow;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    background-color: lightgray;
+    border: 1px solid black;
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+}
+

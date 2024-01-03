@@ -22,10 +22,20 @@ button {
     display: inline-block;
     text-align: center;
     line-height: 30px;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    overflow: hidden;
+
 }
 
 .board-container {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.board {
+    font-size: 0px;
+    display: inline-block;
 }

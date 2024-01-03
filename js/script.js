@@ -73,17 +73,21 @@ function renderBoard(board) {
     for (var i = 0; i < board.length; i++) {
         strHTML += '<table>'
         for (var j = 0; j < board[i].length; j++) {
-            strHTML += '<td>'
+            strHTML += '<tr>'
             const cell = board[i][j]
             const cellValue = cell.isShown ? (cell.isMine ? BOMB : cell.minesAroundCount) : SPACE
             const flagContent = cell.isMarked ? MARK : ''
+            //
+            const backgroundColor = cell.isShown ? 'background-color: lightyellow;' : ''
+
             strHTML += `<div class="cell" 
                 onclick="onCellClicked(${i}, ${j})" 
-                oncontextmenu="onCellRightClicked(this, ${i}, ${j}); return false">${cellValue}${flagContent}</div>`
-            strHTML += '</td>'
+                oncontextmenu="onCellRightClicked(this, ${i}, ${j}); return false"
+                style="${backgroundColor}">${cellValue}${flagContent}</div>`
         }
-        strHTML += '</table>'
+        strHTML += '</tr>'
     }
+    strHTML += '</table>'
     updateBombCount()
     var elBoard = document.querySelector('.board')
     elBoard.innerHTML = strHTML
@@ -136,6 +140,7 @@ function onCellClicked(row, col) {
         revealAllMines()
         stopTimer()
         console.log('Game Over!')
+        alert('Game Over!')
     } else {
         revealCell(row, col)
 

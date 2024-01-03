@@ -6,7 +6,6 @@ const SPACE = ' '
 var LIVES = 3
 var remainingMines
 var gBoard
-
 ////////////////
 //Message to self: fix flag problem, fix css, implement lives,win condition.
 ////////////////
@@ -90,6 +89,7 @@ function renderBoard(board) {
     elBoard.innerHTML = strHTML
     return strHTML
 }
+
 function setMinesNegsCount(board, rowIdx, colIdx) {
     var count = 0
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
@@ -103,6 +103,7 @@ function setMinesNegsCount(board, rowIdx, colIdx) {
     }
     return count
 }
+
 function placeMines(bombs, rows, cols) {
     const positions = []
     while (positions.length < bombs) {
@@ -211,8 +212,6 @@ function revealAllMines() {
     renderBoard(gBoard)
 }
 
-
-
 function updateBombCount() {
     var elBombCount = document.getElementById('bombCount')
     elBombCount.textContent = 'Mines: ' + remainingMines
@@ -243,12 +242,14 @@ function setDifficulty(difficulty) {
     onInit()
     console.log('Difficulty set to:', difficulty + ',', 'mines count:', gLevel.BOMB)
 }
+
 function startTimer() {
     gGame.timerInterval = setInterval(function () {
         gGame.secsPassed++
         updateTimer()
     }, 1000)
 }
+
 function updateTimer() {
     var elTimer = document.querySelector('.timer')
     elTimer.textContent = 'Timer: ' + (gGame.secsPassed / 10)

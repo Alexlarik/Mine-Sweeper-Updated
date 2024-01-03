@@ -4,23 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mine Sweeper</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body onload="onInit()">
     <h1>Mine Sweeper</h1>
     <div class="panel">
-        <button class="click">Easy</button>
-        <button class="click">Medium</button>
-        <button class="click">Hard</button>
+        <button class="click difficulty">Easy</button>
+        <button class="click difficulty">Medium</button>
+        <button class="click difficulty">Hard</button>
     </div>
     <br>
-    <div class="timer">Timer : 0.000</div>
+    <div class="timer">Timer : 0.0</div>
     <br>
     <div id="bombCount">Mines: 0</div>
-    <div class="board"></div>
-    
+    <div class="board-container">
+        <div class="board"></div>
+    </div>
+
 
 
 

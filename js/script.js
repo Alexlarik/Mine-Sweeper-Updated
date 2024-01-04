@@ -7,14 +7,14 @@ var LIVES = 3
 var remainingMines
 var gBoard
 ////////////////
-//Message to self: fix flag problem, fix css, implement lives,win condition.
+//Message to self: debug
 ////////////////
 var gLevel = {
     SIZE: 4,
     BOMB: 2
 }
 
-var originalLevel = {
+var gOriginalLevel = {
     SIZE: gLevel.SIZE,
     BOMB: gLevel.BOMB
 }
@@ -23,15 +23,17 @@ var gGame = {
     isOn: false,
     secsPassed: 0,
     timerInterval: null,
-    markedCount: 0
+    lives: LIVES
 }
 
 function onInit() {
     stopTimer()
     remainingMines = gLevel.BOMB
     gGame.isOn = true
+    gGame.lives = LIVES
     gBoard = buildBoard()
     renderBoard(gBoard)
+    changeSmiley()
     startTimer()
     console.log(gBoard)
 }
@@ -77,7 +79,6 @@ function renderBoard(board) {
             const cell = board[i][j]
             const cellValue = cell.isShown ? (cell.isMine ? BOMB : cell.minesAroundCount) : SPACE
             const flagContent = cell.isMarked ? MARK : ''
-            //
             const backgroundColor = cell.isShown ? 'background-color: lightyellow;' : ''
 
             strHTML += `<div class="cell" 
@@ -119,13 +120,11 @@ function placeMines(bombs, rows, cols) {
 }
 
 function onCellClicked(row, col) {
+    if (gGame.lives === 0) {
+        return
+    }
+
     const cell = gBoard[row][col]
-
-    // if (!gGame.isOn) {
-
-    //     gGame.isOn = true
-    //     startTimer()
-    // }
 
     if (cell.isShown) {
         return
@@ -137,15 +136,15 @@ function onCellClicked(row, col) {
     }
 
     if (cell.isMine) {
-        revealAllMines()
-        stopTimer()
-        console.log('Game Over!')
-        alert('Game Over!')
+        gameResult(false)
     } else {
         revealCell(row, col)
 
         if (cell.minesAroundCount === 0) {
             revealZeroCells(row, col)
+        }
+        if (checkWinCondition()) {
+            gameResult(true)
         }
     }
 }
@@ -195,7 +194,14 @@ function revealZeroCells(row, col, depth = 0, maxDepth = 3) {
             }
             const cell = gBoard[i][j]
 
-            if (!cell.isShown && cell.minesAroundCount === 0 && !cell.isMine) {
+            if (cell.isShown) {
+                continue
+            }
+            if (cell.isMarked) {
+                continue
+            }
+
+            if (!cell.isShown && cell.minesAroundCount === 0 && !cell.isMine && !cell.isMarked) {
                 revealCell(i, j)
                 revealZeroCells(i, j, depth + 1, maxDepth)
             } else if (!cell.isMine && cell.minesAroundCount > 0) {
@@ -218,50 +224,35 @@ function revealAllMines() {
 }
 
 function updateBombCount() {
-    var elBombCount = document.getElementById('bombCount')
+    var elBombCount = document.getElementById('bomb-count')
     elBombCount.textContent = 'Mines: ' + remainingMines
 }
 
-document.querySelector('.panel').addEventListener('click', function (event) {
-    if (event.target.classList.contains('difficulty')) {
-        setDifficulty(event.target.innerText.toLowerCase())
-    }
-})
-
-function setDifficulty(difficulty) {
-
-    if (difficulty === 'easy') {
-        gLevel.SIZE = originalLevel.SIZE
-        gLevel.BOMB = originalLevel.BOMB
-    } else if (difficulty === 'medium') {
-        gLevel.SIZE = originalLevel.SIZE * 2
-        gLevel.BOMB = originalLevel.BOMB * 4
-    } else if (difficulty === 'hard') {
-        gLevel.SIZE = originalLevel.SIZE * 4
-        gLevel.BOMB = originalLevel.BOMB * 8
+function gameResult(won) {
+    gGame.isOn = false
+    if (won) {
+        revealAllMines()
+        stopTimer()
+        console.log('You Won!')
+        alert('You Won!')
     } else {
-        gLevel.SIZE = originalLevel.SIZE
-        gLevel.BOMB = originalLevel.BOMB
+        gGame.lives--
+        if (gGame.lives > 0) {
+            console.log(`Lives remaining: ${gGame.lives}`)
+            alert(`Lives remaining: ${gGame.lives}`)
+        } else {
+            revealAllMines()
+            stopTimer()
+            console.log('Game Over!')
+            alert('Gane Over!')
+        }
+        updateLives()
     }
-
-    onInit()
-    console.log('Difficulty set to:', difficulty + ',', 'mines count:', gLevel.BOMB)
+    changeSmiley()
 }
 
-function startTimer() {
-    gGame.timerInterval = setInterval(function () {
-        gGame.secsPassed++
-        updateTimer()
-    }, 1000)
+function checkWinCondition() {
+    const nonMineCells = gBoard.flat().filter(cell => !cell.isMine)
+    return nonMineCells.every(cell => cell.isShown)
 }
 
-function updateTimer() {
-    var elTimer = document.querySelector('.timer')
-    elTimer.textContent = 'Timer: ' + (gGame.secsPassed / 10)
-}
-
-function stopTimer() {
-    clearInterval(gGame.timerInterval)
-    gGame.timerInterval = null
-    gGame.secsPassed = 0
-}

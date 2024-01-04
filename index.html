@@ -9,25 +9,32 @@
 </head>
 
 <body onload="onInit()">
-    <h1>Mine Sweeper</h1>
-    <div class="panel">
-        <button class="click difficulty">Easy</button>
-        <button class="click difficulty">Medium</button>
-        <button class="click difficulty">Hard</button>
+    <div class="display-color">
+        <h1>Mine Sweeper</h1>
+        <div class="panel">
+            <button class="click difficulty">Easy</button>
+            <button class="click difficulty">Medium</button>
+            <button class="click difficulty">Hard</button>
+        </div>
+        <br>
+        <div class="timer">Timer : 0.0</div>
+        <br>
+        <div id="lives">Lives: 3</div>
+        <br>
+        <div id="bomb-count">Mines : 0</div>
+        <br>
+        <button class="smiley" onclick="resetGame(); changeSmiley()">😃</button>
+        <br>
+        <div class="board-container">
+            <div class="board"></div>
+        </div>
     </div>
-    <br>
-    <div class="timer">Timer : 0.0</div>
-    <br>
-    <div id="bombCount">Mines: 0</div>
-    <div class="board-container">
-        <div class="board"></div>
-    </div>
-
-
-
+    
+    <img src="image/1.jpg" alt="">
 
     <script src="js/util.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/panel.js"></script>
 
 </body>
 

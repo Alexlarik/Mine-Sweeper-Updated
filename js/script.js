@@ -3,9 +3,11 @@
 const MARK = '🚩'
 const BOMB = '💣'
 const SPACE = ' '
-var LIVES = 3
-var remainingMines
 var gBoard
+var remainingMines
+var LIVES = 3
+var gHints = 3
+var resetHints = 3
 ////////////////
 //Message to self: debug
 ////////////////
@@ -255,4 +257,3 @@ function checkWinCondition() {
     const nonMineCells = gBoard.flat().filter(cell => !cell.isMine)
     return nonMineCells.every(cell => cell.isShown)
 }
-
